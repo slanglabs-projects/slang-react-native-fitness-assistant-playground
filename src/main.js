@@ -117,6 +117,28 @@ class Main extends React.Component {
         <Text style={styles.textStyle}>FOODS_FOOD_NAME_DISAMBIGUATE</Text>
       </TouchableHighlight>
     );
+    views.push(
+      <TouchableHighlight
+        key="Confirmation Required"
+        style={{ ...styles.openButton, backgroundColor: '#2196F3' }}
+        onPress={() => {
+          this.setFoodLoggingModalVisible(!this.state.foodLoggingModalVisible);
+          this.state.foodLoggingUserJourneyObj.notifyAppState(FoodLoggingUserJourney.FoodLoggingCompleteAppState(FoodLoggingUserJourney.AppStateCondition.CONFIRMATION_REQUIRED));
+        }}>
+        <Text style={styles.textStyle}>CONFIRMATION_REQUIRED</Text>
+      </TouchableHighlight>
+    );
+    views.push(
+      <TouchableHighlight
+        key="Confitmation Bailout"
+        style={{ ...styles.openButton, backgroundColor: '#2196F3' }}
+        onPress={() => {
+          this.setFoodLoggingModalVisible(!this.state.foodLoggingModalVisible);
+          this.state.foodLoggingUserJourneyObj.notifyAppState(FoodLoggingUserJourney.FoodLoggingCompleteAppState(FoodLoggingUserJourney.AppStateCondition.CONFIRMATION_BAILOUT));
+        }}>
+        <Text style={styles.textStyle}>CONFIRMATION_BAILOUT</Text>
+      </TouchableHighlight>
+    );
     return views;
   };
 
@@ -209,8 +231,8 @@ class Main extends React.Component {
     try {
       SlangFitnessAssistant.initialize({
         requestedLocales: ['en-IN', 'hi-IN'],
-        assistantId: 'YourAssistantId',
-        apiKey: 'YourApiKey',
+        assistantId: 'a26b7f63eb1b430ca87a401eefc0456d',
+        apiKey: '81aa2384c19e42b4af9a2f66703b38ab',
         enableCustomTrigger: false,
         triggerPosition: {
           baseUIPosition: AssistantUIPosition.BaseUIPosition.BOTTOM_CENTER,
