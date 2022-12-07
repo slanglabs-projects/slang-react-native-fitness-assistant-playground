@@ -5,6 +5,8 @@ import SlangFitnessAssistant, {
   FitnessUserJourney,
   AssistantUI,
   FoodLoggingUserJourney,
+  WeightLoggingUserJourney,
+  SugarLoggingUserJourney
 } from '@slanglabs/slang-conva-react-native-fitness-assistant';
 import { throwStatement } from "@babel/types";
 class Main extends React.Component {
@@ -167,16 +169,24 @@ class Main extends React.Component {
     const fitnessAssistantListener = {
       onFoodLog: (foodInfo, foodLoggingUserJourney) => {
         this.setState({
-          intentResponse: "User Journey : onFoodLog\n\nAssociated Data :\n" + JSON.stringify(foodInfo, null, '\t'),
-          foodLoggingUserJourneyObj: foodLoggingUserJourney
+          intentResponse: "User Journey : onFoodLog\n\nAssociated Data :\n" + JSON.stringify(foodInfo, null, '\t')
         });
         console.log("foodInfo" + JSON.stringify(foodInfo, null, '\t'));
-        if (this.state.showAppStateConditions) {
-          foodLogAppStateAlert();
-          return FoodLoggingUserJourney.WaitingAppState();
-        } else {
-          return FoodLoggingUserJourney.FoodLoggingCompleteAppState(FoodLoggingUserJourney.AppStateCondition.SUCCESS);
-        }
+        return FoodLoggingUserJourney.FoodLoggingCompleteAppState(FoodLoggingUserJourney.AppStateCondition.SUCCESS);
+      },
+      onSugarLog: (sugarInfo, sugarLoggingUserJourney) => {
+        this.setState({
+          intentResponse: "User Journey : onSugarLog\n\nAssociated Data :\n" + JSON.stringify(sugarInfo, null, '\t')
+        });
+        console.log("sugarInfo" + JSON.stringify(sugarInfo, null, '\t'));
+        return SugarLoggingUserJourney.SugarLoggingCompleteAppState(SugarLoggingUserJourney.AppStateCondition.SUCCESS);
+      },
+      onWeightLog: (weightInfo, weightLoggingUserJourney) => {
+        this.setState({
+          intentResponse: "User Journey : onWeightLog\n\nAssociated Data :\n" + JSON.stringify(weightInfo, null, '\t')
+        });
+        console.log("weightInfo" + JSON.stringify(weightInfo, null, '\t'));
+        return WeightLoggingUserJourney.WeightLoggingCompleteAppState(WeightLoggingUserJourney.AppStateCondition.SUCCESS);
       },
       onNavigation: (navigationInfo, navigationUserJourney) => {
 
@@ -231,9 +241,10 @@ class Main extends React.Component {
     try {
       SlangFitnessAssistant.initialize({
         requestedLocales: ['en-IN', 'hi-IN'],
-        assistantId: 'a26b7f63eb1b430ca87a401eefc0456d',
-        apiKey: '81aa2384c19e42b4af9a2f66703b38ab',
+        assistantId: '4cfb53036fd2443dacbc76cab7d984e5',
+        apiKey: '0178e1d5143547749cbc226fca47ee18',
         enableCustomTrigger: false,
+        enableStrictMode: true,
         triggerPosition: {
           baseUIPosition: AssistantUIPosition.BaseUIPosition.BOTTOM_CENTER,
           offsetY: -20,
@@ -254,11 +265,7 @@ class Main extends React.Component {
       SlangFitnessAssistant.setLifecycleObserver(
         fitnessAssistantLifeCycleObserver,
       );
-      // SlangFitnessAssistant.ui.setWaveColorGradient(['#0000A0', '#0000FF']);
-      // SlangFitnessAssistant.ui.setTextHighlightColor('#0000A0');
-      // SlangFitnessAssistant.ui.setSettingsButtonBackgroundColor('#0000A0');
-      // SlangFitnessAssistant.ui.setControlButtonBackgroundColor('#0000A0');
-
+      SlangFitnessAssistant.setAppDefaultUserJourney(FitnessUserJourney.WEIGHT_LOGGING);
       SlangFitnessAssistant.ui.showTrigger();
 
     } catch (error) {
